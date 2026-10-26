@@ -3,9 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { Divida } from "@/components/Divida";
 import { EmConstrucao } from "@/components/EmConstrucao";
+import { Precos } from "@/components/Precos";
 import { RaioX } from "@/components/RaioX";
-import { getMandato, mandatos, numeroLabel, periodo } from "@/lib/mandatos";
+import { getMandato, mandatos, numeroLabel, periodo, type Mandato } from "@/lib/mandatos";
 
 export function generateStaticParams() {
   return mandatos.map((m) => ({ slug: m.slug }));
@@ -18,18 +20,26 @@ export async function generateMetadata(props: PageProps<"/mandato/[slug]">): Pro
   return { title: `${m.presidente} (${m.inicio.slice(0, 4)}–${m.fim.slice(0, 4)})` };
 }
 
-const secoes = [
+type Secao = {
+  id: string;
+  titulo: string;
+  /** Seção já implementada; as demais mostram o aviso de "em construção". */
+  Conteudo?: (props: { m: Mandato }) => React.ReactNode;
+  fase?: number;
+  texto?: string;
+};
+
+const secoes: Secao[] = [
   { id: "resumo", titulo: "Resumo", fase: 4, texto: "Indicadores no dia da posse e no fim do mandato." },
+  { id: "raiox", titulo: "Raio-X social", Conteudo: RaioX },
+  { id: "precos", titulo: "Preços", Conteudo: Precos },
   {
-    id: "raiox",
-    titulo: "Raio-X social",
+    id: "emprego",
+    titulo: "Emprego",
     fase: 4,
-    texto:
-      "Desemprego, fome (insegurança alimentar grave e Mapa da Fome da ONU), extrema pobreza, desigualdade, renda, homicídios, mortalidade infantil, expectativa de vida, desmatamento e informalidade, na posse e no fim.",
+    texto: "Saldo de empregos formais (CAGED). A taxa de desemprego, a renda e o salário mínimo real já estão no Raio-X social.",
   },
-  { id: "precos", titulo: "Preços", fase: 4, texto: "Cesta básica, alimentos e combustíveis, com valor nominal e corrigido pelo IPCA." },
-  { id: "emprego", titulo: "Emprego", fase: 4, texto: "Desocupação (PNAD Contínua), saldo de empregos formais (CAGED) e salário mínimo real." },
-  { id: "divida", titulo: "Dívida pública", fase: 4, texto: "Dívida bruta e líquida em relação ao PIB e a Selic." },
+  { id: "divida", titulo: "Dívida pública", Conteudo: Divida },
   { id: "fez", titulo: "O que fez", fase: 5, texto: "Leis, emendas, programas e crises do mandato, com o número do ato." },
   { id: "impostos", titulo: "Impostos", fase: 5, texto: "Tributos criados, aumentados, reduzidos ou extintos, e para que servem." },
   { id: "propostas", titulo: "Propostas", fase: 5, texto: "Plano de governo registrado no TSE, com status e evidência de cada proposta." },
@@ -154,7 +164,7 @@ async function MandatoConteudo({ params }: { params: Params }) {
                 {s.titulo}
               </h2>
             </div>
-            {s.id === "raiox" ? <RaioX m={m} /> : <EmConstrucao fase={s.fase}>{s.texto}</EmConstrucao>}
+            {s.Conteudo ? <s.Conteudo m={m} /> : <EmConstrucao fase={s.fase ?? 4}>{s.texto}</EmConstrucao>}
           </section>
         ))}
       </div>

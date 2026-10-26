@@ -1,18 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getMandato, mandatos } from "@/lib/mandatos";
-import {
-  classificar,
-  comparar,
-  desemprego,
-  escolherPontos,
-  fome,
-  formatarDelta,
-  indicadoresTabela,
-  mapaDaFome,
-  noMapaDaFome,
-  rotuloPeriodo,
-  type Ponto,
-} from "@/lib/raiox";
+import { classificar, comparar, escolherPontos, formatarDelta, rotuloPeriodo, type Ponto } from "@/lib/indicadores";
+import { desemprego, fome, indicadoresTabela, mapaDaFome, noMapaDaFome } from "@/lib/raiox";
 
 const mandato = (slug: string) => {
   const m = getMandato(slug);
