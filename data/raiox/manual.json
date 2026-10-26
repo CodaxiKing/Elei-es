@@ -1,0 +1,12 @@
+{
+  "fome_penssan_pessoas": {
+    "fonte": "Rede PENSSAN — Inquérito Nacional sobre Insegurança Alimentar no Contexto da Pandemia (VIGISAN)",
+    "url": "https://pesquisassan.net.br/olheparaafome/",
+    "unidade": "milhões de pessoas",
+    "nota": "Pesquisa independente, metodologia diferente da do IBGE; não deve ser comparada diretamente com ela",
+    "pontos": [
+      { "periodo": "2020", "fim": "2020-12-31", "valor": 19.1, "rotulo": "1º VIGISAN (dez/2020) · 9,0% da população" },
+      { "periodo": "2022", "fim": "2022-04-30", "valor": 33.1, "rotulo": "2º VIGISAN (nov/2021–abr/2022) · 15,5% da população" }
+    ]
+  }
+}
